@@ -1,60 +1,73 @@
-Este documento fornece uma visão geral do arquivo `docker-compose` fornecido para criar serviços Kafka e Zookeeper e explica o exemplo de produção e consumo de mensagens.
+---
 
-# Docker Compose Overview
+# 📄 Visão Geral do Docker Compose
 
-## Serviços (services):
+Este documento fornece uma visão geral do arquivo `docker-compose` fornecido para criar serviços Kafka e Zookeeper. Também explica o exemplo de produção e consumo de mensagens.
 
-1. zookeeper:
-   - Imagem: Foi utilizada a imagem mais recente do Zookeeper da Bitnami (latest).
-   - Portas: A porta 2181 é exposta, que é a porta padrão do Zookeeper.
-   - Environment:
-     - `ALLOW_ANONYMOUS_LOGIN=yes`: Isso permite o login anônimo no Zookeeper.
+---
 
-2. kafka:
-   - Imagem: Foi utilizada a imagem mais recente do Kafka da Bitnami.
-   - Restart: Em caso de falha do container, ele tentará reiniciar.
-   - Portas: A porta 9092 é exposta, que é a porta padrão para comunicação do Kafka.
-   - Volumes: Persistência de dados para o Kafka é armazenada no volume `kafka-data`.
-   - Environment:
-     - `KAFKA_BROKER_ID=1`: Identificador único para o broker.
-     - `KAFKA_LISTENERS`: Endereço e porta em que o Kafka ouvirá conexões.
-     - `KAFKA_ADVERTISED_LISTENERS`: Endereço e porta que o broker fornecerá aos produtores e consumidores para se conectar.
-     - `KAFKA_ZOOKEEPER_CONNECT`: String de conexão para o Zookeeper.
-     - `KAFKA_NUM_PARTITIONS=3`: Número de partições por tópico.
-     - `KAFKA_ALLOW_PLAINTEXT_LISTENER=yes`: Permite conexões sem criptografia.
-   - **Depends_on**: Garante que o Kafka seja iniciado apenas depois do serviço Zookeeper.
+## 🚀 Serviços (services)
 
-## Volumes:
+### 1. 🦓 Zookeeper:
 
-- kafka-data: Usado para armazenar dados persistidos do Kafka.
+- **Imagem**: Utilizada a versão mais recente do Zookeeper da Bitnami.
+- **Portas**: 2181 (padrão do Zookeeper).
+- **Environment**:
+  - `ALLOW_ANONYMOUS_LOGIN=yes`: Permite o login anônimo no Zookeeper.
 
-#Exemplo de Produção e Consumo de Mensagens
+### 2. 📬 Kafka:
 
-##Producer:
+- **Imagem**: Utilizada a versão mais recente do Kafka da Bitnami.
+- **Restart**: Reinicia em caso de falha do container.
+- **Portas**: 9092 (padrão do Kafka).
+- **Volumes**: Dados persistentes armazenados em `kafka-data`.
+- **Environment**:
+  - `KAFKA_BROKER_ID=1`: Identificador único para o broker.
+  - `KAFKA_LISTENERS`: Endereço/porta de escuta.
+  - `KAFKA_ADVERTISED_LISTENERS`: Endereço/porta anunciados.
+  - `KAFKA_ZOOKEEPER_CONNECT`: String de conexão Zookeeper.
+  - `KAFKA_NUM_PARTITIONS=3`: Partições por tópico.
+  - `KAFKA_ALLOW_PLAINTEXT_LISTENER=yes`: Conexões sem criptografia.
+- **Depends_on**: Kafka inicia após o serviço Zookeeper.
 
-O script Python fornece um exemplo simples de um produtor Kafka. 
+---
 
-1. Configura o servidor Kafka usando `bootstrap.servers`.
-2. Entra em um loop, solicitando ao usuário para inserir mensagens.
-3. As mensagens inseridas pelo usuário são produzidas no tópico `begin`.
-4. Podem ser enviadas quantas mensagens o usuário desejar.
-4. Ao digitar `sair`, o loop termina.
+## 💽 Volumes
 
-##Consumer:
+- **kafka-data**: Armazena dados persistentes do Kafka.
 
-Este script é um exemplo de um consumidor Kafka.
+---
 
-1. Configura o servidor Kafka e define um `group.id`.
+# 📝 Exemplo de Produção e Consumo de Mensagens
+
+## 🎙️ Producer:
+
+O script Python exemplifica um produtor Kafka:
+
+1. Configuração via `bootstrap.servers`.
+2. Loop de inserção de mensagens pelo usuário.
+3. Mensagens são enviadas para o tópico `begin`.
+4. Finalize com `sair`.
+
+## 📻 Consumer:
+
+Exemplo de um consumidor Kafka:
+
+1. Configura o servidor e define `group.id`.
 2. Assina o tópico `begin`.
-3. Entra em um loop, lendo mensagens deste tópico.
-4. Exibe as mensagens recebidas.
-5. Em caso de erro ao consumir uma mensagem, ele exibirá um erro.
-6. O loop pode ser interrompido pressionando `CTRL + C`.
+3. Loop de leitura de mensagens.
+4. Mostra mensagens recebidas.
+5. Mostra erros, se houver.
+6. Finalize com `CTRL + C`.
 
-##Instruções para Execução
+---
 
-1. Inicie os serviços com: `docker-compose up`.
-2. Abra um novo terminal e execute o script do produtor: `python producer.py`.
-3. Em uma janela separada do terminal, execute o script do consumidor: `python consumer.py`.
-4. Digite mensagens no script do produtor e veja-as sendo recebidas no script do consumidor.
-5. Para encerrar os serviços: `CRTL + C` e `docker-compose down`
+## 🛠️ Instruções para Execução
+
+1. `docker-compose up` para iniciar.
+2. Novo terminal: `python producer.py`.
+3. Outro terminal: `python consumer.py`.
+4. Comunique-se entre produtor e consumidor.
+5. Encerre com `CTRL + C` e `docker-compose down`.
+
+---
