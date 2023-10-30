@@ -1,21 +1,21 @@
 Este documento fornece uma visão geral do arquivo `docker-compose` fornecido para criar serviços Kafka e Zookeeper e explica o exemplo de produção e consumo de mensagens.
 
-## Docker Compose Overview
+# Docker Compose Overview
 
-### Serviços (services):
+## Serviços (services):
 
-1. **zookeeper:**
-   - **Imagem**: Foi utilizada a imagem mais recente do Zookeeper da Bitnami (latest).
-   - **Portas**: A porta 2181 é exposta, que é a porta padrão do Zookeeper.
-   - **Environment**:
+1. zookeeper:
+   - Imagem: Foi utilizada a imagem mais recente do Zookeeper da Bitnami (latest).
+   - Portas: A porta 2181 é exposta, que é a porta padrão do Zookeeper.
+   - Environment:
      - `ALLOW_ANONYMOUS_LOGIN=yes`: Isso permite o login anônimo no Zookeeper.
 
-2. **kafka:**
-   - **Imagem**: Foi utilizada a imagem mais recente do Kafka da Bitnami.
-   - **Restart**: Em caso de falha do container, ele tentará reiniciar.
-   - **Portas**: A porta 9092 é exposta, que é a porta padrão para comunicação do Kafka.
-   - **Volumes**: Persistência de dados para o Kafka é armazenada no volume `kafka-data`.
-   - **Environment**:
+2. kafka:
+   - Imagem: Foi utilizada a imagem mais recente do Kafka da Bitnami.
+   - Restart: Em caso de falha do container, ele tentará reiniciar.
+   - Portas: A porta 9092 é exposta, que é a porta padrão para comunicação do Kafka.
+   - Volumes: Persistência de dados para o Kafka é armazenada no volume `kafka-data`.
+   - Environment:
      - `KAFKA_BROKER_ID=1`: Identificador único para o broker.
      - `KAFKA_LISTENERS`: Endereço e porta em que o Kafka ouvirá conexões.
      - `KAFKA_ADVERTISED_LISTENERS`: Endereço e porta que o broker fornecerá aos produtores e consumidores para se conectar.
@@ -24,13 +24,13 @@ Este documento fornece uma visão geral do arquivo `docker-compose` fornecido pa
      - `KAFKA_ALLOW_PLAINTEXT_LISTENER=yes`: Permite conexões sem criptografia.
    - **Depends_on**: Garante que o Kafka seja iniciado apenas depois do serviço Zookeeper.
 
-### Volumes:
+## Volumes:
 
-- **kafka-data**: Usado para armazenar dados persistidos do Kafka.
+- kafka-data: Usado para armazenar dados persistidos do Kafka.
 
-## Exemplo de Produção e Consumo de Mensagens
+#Exemplo de Produção e Consumo de Mensagens
 
-### Producer:
+##Producer:
 
 O script Python fornece um exemplo simples de um produtor Kafka. 
 
@@ -40,7 +40,7 @@ O script Python fornece um exemplo simples de um produtor Kafka.
 4. Podem ser enviadas quantas mensagens o usuário desejar.
 4. Ao digitar `sair`, o loop termina.
 
-### Consumer:
+##Consumer:
 
 Este script é um exemplo de um consumidor Kafka.
 
@@ -51,7 +51,7 @@ Este script é um exemplo de um consumidor Kafka.
 5. Em caso de erro ao consumir uma mensagem, ele exibirá um erro.
 6. O loop pode ser interrompido pressionando `CTRL + C`.
 
-## Instruções para Execução
+##Instruções para Execução
 
 1. Inicie os serviços com: `docker-compose up`.
 2. Abra um novo terminal e execute o script do produtor: `python producer.py`.
